@@ -33,12 +33,13 @@ class MyHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         if self.in_td:
-                self.table[-1][-1].append(data)
+            self.table[-1][-1].append(data)
 
 
 def get_text(url: str) -> str:
     text = urlopen(url).read().decode()
     return text
+
 
 def print_table(table):
     for row in table:
@@ -47,6 +48,12 @@ def print_table(table):
                 print(information, end=' | ')
             print()
 
+def split_table_on_2_week(table):
+    middle = int(len(table)/2)
+    first = table[:middle]
+    second = table[middle:]
+    return first, second
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     text = get_text(URL)
@@ -54,7 +61,8 @@ if __name__ == '__main__':
     parser.feed(text)
     table = parser.table
     parser.close()
-    print_table(table)
-    print(table)
+    first, second = split_table_on_2_week(table)
+    print_table(first)
+    print(first)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
