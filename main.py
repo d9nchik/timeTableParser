@@ -2,7 +2,7 @@ from urllib.request import urlopen
 from html.parser import HTMLParser
 
 URL = 'http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=20eef8aa-5e2b-4225-8f05-e8fc682dc125'
-NAME_OF_OUTPUT_FILE = 'index.html'
+NAME_OF_OUTPUT_FILE = 'site/index.html'
 
 
 class MyHTMLParser(HTMLParser):
