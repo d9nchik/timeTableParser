@@ -2,6 +2,7 @@ from urllib.request import urlopen
 from html.parser import HTMLParser
 
 URL = 'http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=20eef8aa-5e2b-4225-8f05-e8fc682dc125'
+NAME_OF_OUTPUT_FILE = 'index.html'
 
 
 class MyHTMLParser(HTMLParser):
@@ -42,17 +43,42 @@ def get_text(url: str) -> str:
 
 
 def print_table(table):
-    for row in table:
-        for data in row:
-            for information in data:
-                print(information, end=' | ')
-            print()
+    with open(NAME_OF_OUTPUT_FILE, 'a') as f:
+        print('<table>', file=f)
+        for row in table:
+            print('<tr>', file=f)
+            for data in row:
+                print('<td>', file=f)
+                for information in data:
+                    print(''.join(information), end=' ', file=f)
+                print('</td>', file=f)
+            print('</tr>', file=f)
+            print(file=f)
+        print('</table>', file=f)
+
 
 def split_table_on_2_week(table):
-    middle = int(len(table)/2)
+    middle = int(len(table) / 2)
     first = table[:middle]
     second = table[middle:]
     return first, second
+
+
+def writeHeadOfHTML():
+    with open(NAME_OF_OUTPUT_FILE, 'w') as f:
+        print('''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyTimeTable</title>
+</head>
+<body>''', file=f)
+
+
+def writeTailOfHTML():
+    with open(NAME_OF_OUTPUT_FILE, 'a') as f:
+        print('''</body></html>''', file=f)
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
@@ -61,8 +87,11 @@ if __name__ == '__main__':
     parser.feed(text)
     table = parser.table
     parser.close()
-    first, second = split_table_on_2_week(table)
-    print_table(first)
-    print(first)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    first, second = split_table_on_2_week(table)
+    # print_table(first)
+    # print(first)
+    writeHeadOfHTML()
+    print_table(first)
+    print_table(second)
+    writeTailOfHTML()
