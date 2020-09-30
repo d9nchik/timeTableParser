@@ -45,7 +45,19 @@ def get_text(url: str) -> str:
 def print_table(table, title):
     with open(NAME_OF_OUTPUT_FILE, 'a') as f:
         print('<h2 class="text-center">{}</h2>'.format(title), file=f)
-        print('<table class="table table-stripped table-bordered table-hover">', file=f)
+        print('<table class="table table-striped table-bordered table-hover">', file=f)
+        print('<thead class="thead-dark">', file=f)
+        row1 = table[0]
+        print('<tr>', file=f)
+        for data1 in row1:
+            print('<th>', file=f)
+            for information1 in data1:
+                print(''.join(information1), end=' ', file=f)
+            print('</th>', file=f)
+        print('</tr>', file=f)
+        print(file=f)
+        table=table[1:]
+        print('</thead><tbody>', file=f)
         for row in table:
             print('<tr>', file=f)
             for data in row:
@@ -55,7 +67,7 @@ def print_table(table, title):
                 print('</td>', file=f)
             print('</tr>', file=f)
             print(file=f)
-        print('</table>', file=f)
+        print('</tbody></table>', file=f)
 
 
 def split_table_on_2_week(table):
@@ -74,6 +86,7 @@ def writeHeadOfHTML():
     <title>MyTimeTable</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>''', file=f)
 
@@ -88,7 +101,8 @@ def writeTailOfHTML():
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script></body></html>''', file=f)
+        crossorigin="anonymous"></script>
+<script src="js/main.js"></script></body></html>''', file=f)
 
 
 # Press the green button in the gutter to run the script.
