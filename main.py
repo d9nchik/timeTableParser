@@ -118,6 +118,6 @@ if __name__ == '__main__':
     # print_table(first)
     # print(first)
     writeHeadOfHTML()
-    print_table(first, 'Перший тиждеь')
+    print_table(first, 'Перший тиждень')
     print_table(second, 'Другий тиждень')
     writeTailOfHTML()
