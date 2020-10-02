@@ -46,7 +46,7 @@ function selectPair(weekNumber, dayNumber, pairNumber) {
 selectPair(weekNumber, date.getDay(), getNumberOfPair(date));
 
 function getNumberOfPair(date) {
-    const endOfPair = [830, 1200, 1355, 1550, 1745];
+    const endOfPair = [1000, 1200, 1355, 1550, 1745];
     let time = date.getHours() * 100 + date.getMinutes();
     for (let i = 0; i < endOfPair.length; i++) {
         if (time < endOfPair[i])
