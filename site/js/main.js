@@ -1,6 +1,8 @@
 function selectDayOfWeek(weekNumber, dayNumber) {
-    document.querySelectorAll('table:nth-child(' + weekNumber * 2 + ') td:nth-child(' + (dayNumber + 1) + ')').forEach(
-        (e) => e.setAttribute('class', 'table-info'));
+    if (dayNumber === 0)
+        return;
+    document.querySelectorAll('table:nth-child(' + weekNumber * 2 + ') td:nth-child(' + (dayNumber + 1) + ')')
+        .forEach((e) => e.setAttribute('class', 'table-info'));
 }
 
 function getWeekNumber(d) {
@@ -10,7 +12,7 @@ function getWeekNumber(d) {
     // Make Sunday's day number 7
     d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
     // Get first day of year
-    var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     // Calculate full weeks to nearest Thursday
     // Return array of year and week number
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
@@ -21,6 +23,10 @@ let weekNumber = getWeekNumber(date) % 2 + 1
 selectDayOfWeek(weekNumber, date.getDay());
 
 function selectPair(weekNumber, dayNumber, pairNumber) {
+    if (dayNumber === 0) {
+        dayNumber = 1;
+        weekNumber = weekNumber % 2 + 1;
+    }
     while (true) {
         let node =
             document.querySelector("table:nth-child(" + weekNumber * 2 + ") tbody tr:nth-child(" + pairNumber
