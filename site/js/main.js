@@ -1,8 +1,8 @@
-function selectDayOfWeek(weekNumber, dayNumber) {
+function selectDayOfWeek(weekNumber, dayNumber, classStyle = 'table-info') {
     if (dayNumber === 0)
         return;
     document.querySelectorAll('table:nth-child(' + weekNumber * 2 + ') td:nth-child(' + (dayNumber + 1) + ')')
-        .forEach((e) => e.setAttribute('class', 'table-info'));
+        .forEach((e) => e.setAttribute('class', classStyle));
 }
 
 function getWeekNumber(d) {
@@ -18,12 +18,9 @@ function getWeekNumber(d) {
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
 
-let date = new Date();
-let weekNumber = getWeekNumber(date) % 2 + 1
-selectDayOfWeek(weekNumber, date.getDay());
-
-function selectPair(weekNumber, dayNumber, pairNumber) {
+function selectPair(weekNumber, dayNumber, pairNumber, classStyle = 'table-warning') {
     if (dayNumber === 0) {
+        pairNumber = 1;
         dayNumber = 1;
         weekNumber = weekNumber % 2 + 1;
     }
@@ -33,7 +30,7 @@ function selectPair(weekNumber, dayNumber, pairNumber) {
                 + ") td:nth-child(" + (dayNumber + 1) + ")");
         //node can be null in case if getNumbersOfPair return size + 1 value
         if (node && node.innerText) {
-            node.setAttribute('class', 'table-warning');
+            node.setAttribute('class', classStyle);
             break;
         }
         pairNumber++;
@@ -48,9 +45,6 @@ function selectPair(weekNumber, dayNumber, pairNumber) {
     }
 }
 
-
-selectPair(weekNumber, date.getDay(), getNumberOfPair(date));
-
 function getNumberOfPair(date) {
     const endOfPair = [1000, 1200, 1355, 1550, 1745];
     let time = date.getHours() * 100 + date.getMinutes();
@@ -60,3 +54,15 @@ function getNumberOfPair(date) {
     }
     return endOfPair.length + 1;
 }
+
+(function refresh() {
+    let date = new Date();
+    let weekNumber = getWeekNumber(date) % 2 + 1
+    selectDayOfWeek(weekNumber, date.getDay());
+    selectPair(weekNumber, date.getDay(), getNumberOfPair(date));
+    setTimeout(() => {
+        selectDayOfWeek(weekNumber, date.getDay(), '');
+        selectPair(weekNumber, date.getDay(), getNumberOfPair(date), '');
+        refresh();
+    }, 1_000 * 10)
+})();
