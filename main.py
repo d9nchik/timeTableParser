@@ -1,7 +1,7 @@
-from urllib.request import urlopen
 from html.parser import HTMLParser
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
-URL = 'http://rozklad.kpi.ua/Schedules/ViewSchedule.aspx?g=20eef8aa-5e2b-4225-8f05-e8fc682dc125'
 NAME_OF_OUTPUT_FILE = 'site/index.html'
 
 
@@ -37,8 +37,17 @@ class MyHTMLParser(HTMLParser):
             self.table[-1][-1].append(data)
 
 
-def get_text(url: str) -> str:
-    text = urlopen(url).read().decode()
+def get_text(group: str) -> str:
+    data = urlencode({
+        '__VIEWSTATE': '/wEMDAwQAgAADgEMBQAMEAIAAA4BDAUDDBACAAAOAgwFBwwQAgwPAgEIQ3NzQ2xhc3MBD2J0biBidG4tcHJpbWFyeQEEXyFTQgUCAAAADAUNDBACAAAOAQwFAQwQAgAADgEMBQ0MEAIMDwEBBFRleHQBG9Cg0L7Qt9C60LvQsNC0INC30LDQvdGP0YLRjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALVdjzppTCyUtNVSyV7xykGQzHz2',
+        'ctl00$MainContent$ctl00$txtboxGroup': group,
+        '__EVENTTARGET': '',
+        '__EVENTARGUMENT': '',
+        'ctl00$MainContent$ctl00$btnShowSchedule': 'Розклад занять',
+        '__EVENTVALIDATION': '/wEdAAEAAAD/////AQAAAAAAAAAPAQAAAAUAAAAIsA3rWl3AM+6E94I5Tu9cRJoVjv0LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHfLZVQO6kVoZVPGurJN4JJIAuaU'
+    })
+    data = data.encode('ascii')
+    text = urlopen('http://rozklad.kpi.ua/Schedules/ScheduleGroupSelection.aspx', data).read().decode()
     return text
 
 
@@ -99,15 +108,13 @@ def writeTailOfHTML():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    text = get_text(URL)
+    text = get_text('ІП-92')
     parser = MyHTMLParser()
     parser.feed(text)
     table = parser.table
     parser.close()
 
     first, second = split_table_on_2_week(table)
-    # print_table(first)
-    # print(first)
     writeHeadOfHTML()
     print_table(first, 'Перший тиждень')
     print_table(second, 'Другий тиждень')
