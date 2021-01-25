@@ -57,7 +57,7 @@ function getNumberOfPair(date) {
 
 (function refresh() {
     let date = new Date();
-    let weekNumber = getWeekNumber(date) % 2 + 1
+    let weekNumber = (getWeekNumber(date) + 1) % 2 + 1
     selectDayOfWeek(weekNumber, date.getDay());
     selectPair(weekNumber, date.getDay(), getNumberOfPair(date));
     setTimeout(() => {
