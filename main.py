@@ -71,12 +71,11 @@ def print_table(table, title):
         print('<h2 class="text-center">{}</h2>'.format(title), file=f)
         print('<table class="table table-striped table-bordered table-hover">', file=f)
         print('<thead class="thead-dark">', file=f)
-        row1 = table[0]
+        header = table[0]
         print('<tr>', file=f)
-        for data1 in row1:
+        for column in header:
             print('<th>', file=f)
-            for information1 in data1:
-                print(''.join(information1), end=' ', file=f)
+            print(''.join(column), end=' ', file=f)
             print('</th>', file=f)
         print('</tr>', file=f)
         print(file=f)
