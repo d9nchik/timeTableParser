@@ -1,6 +1,9 @@
+#! /usr/bin/env python3
+
 from html.parser import HTMLParser
 from urllib.parse import urlencode
 from urllib.request import urlopen
+from json import dump, load
 
 NAME_OF_OUTPUT_FILE = 'site/index.html'
 
@@ -66,34 +69,6 @@ def get_link(group: str) -> str:
     return answer.url
 
 
-def print_table(table, title):
-    with open(NAME_OF_OUTPUT_FILE, 'a') as f:
-        print('<h2 class="text-center">{}</h2>'.format(title), file=f)
-        print('<table class="table table-striped table-bordered table-hover">', file=f)
-        print('<thead class="thead-dark">', file=f)
-        row1 = table[0]
-        print('<tr>', file=f)
-        for data1 in row1:
-            print('<th>', file=f)
-            for information1 in data1:
-                print(''.join(information1), end=' ', file=f)
-            print('</th>', file=f)
-        print('</tr>', file=f)
-        print(file=f)
-        table = table[1:]
-        print('</thead><tbody>', file=f)
-        for row in table:
-            print('<tr>', file=f)
-            for data in row:
-                print('<td>', file=f)
-                for information in data:
-                    print(''.join(information), end=' ', file=f)
-                print('</td>', file=f)
-            print('</tr>', file=f)
-            print(file=f)
-        print('</tbody></table>', file=f)
-
-
 def split_table_on_2_week(table):
     middle = int(len(table) / 2)
     first = table[:middle]
@@ -101,36 +76,34 @@ def split_table_on_2_week(table):
     return first, second
 
 
-def writeHeadOfHTML():
-    with open(NAME_OF_OUTPUT_FILE, 'w') as f:
-        print('''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>MyTimeTable</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
-</head>
-<body>''', file=f)
-
-
-def writeTailOfHTML():
-    with open(NAME_OF_OUTPUT_FILE, 'a') as f:
-        print('''<script src="js/main.js"></script></body></html>''', file=f)
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    text = get_text('ІП-92')
+def parse_table(group_name: str):
+    text = get_text(group_name)
     parser = MyHTMLParser()
     parser.feed(text)
     table = parser.table
     parser.close()
 
-    first, second = split_table_on_2_week(table)
-    writeHeadOfHTML()
-    print_table(first, 'Перший тиждень')
-    print_table(second, 'Другий тиждень')
-    writeTailOfHTML()
+    return split_table_on_2_week(table)
+
+
+def read_group_names() -> [str]:
+    with open('groups.json') as f:
+        return load(f)
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    group_names = read_group_names()
+    data = {}
+
+    for group in group_names:
+        print(group)
+        try:
+            first_week, second_week = parse_table(group)
+            data[group] = [first_week, second_week]
+        except Exception:
+            print(Exception)
+            print('Problem with group: {}'.format(group))
+
+    with open('big_timetable.json', 'w') as f:
+        dump(data, f)
