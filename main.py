@@ -75,7 +75,7 @@ def print_table(table, title):
         print('<tr>', file=f)
         for column in header:
             print('<th>', file=f)
-            print(''.join(column), end=' ', file=f)
+            print(' '.join(column), end=' ', file=f)
             print('</th>', file=f)
         print('</tr>', file=f)
         print(file=f)
@@ -85,8 +85,7 @@ def print_table(table, title):
             print('<tr>', file=f)
             for data in row:
                 print('<td>', file=f)
-                for information in data:
-                    print(''.join(information), end=' ', file=f)
+                print(' '.join(data), end=' ', file=f)
                 print('</td>', file=f)
             print('</tr>', file=f)
             print(file=f)
