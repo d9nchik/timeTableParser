@@ -65,12 +65,10 @@ function getNumberOfPair(date) {
     const day = date.getDay();
     const numberOfPair = getNumberOfPair(date);
 
-    if (previousWeekNumber !== weekNumber || previousDay !== day) {
+    if (numberOfPair !== previousNumberOfPair || previousWeekNumber !== weekNumber || previousDay !== day) {
         selectDayOfWeek(previousWeekNumber, previousDay, '');
         selectDayOfWeek(weekNumber, day);
-    }
 
-    if (numberOfPair !== previousNumberOfPair || previousWeekNumber !== weekNumber || previousDay !== day) {
         selectPair(previousNumberOfPair, previousDay, previousNumberOfPair, '');
         selectPair(weekNumber, day, numberOfPair);
     }
