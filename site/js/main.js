@@ -1,5 +1,5 @@
 function selectDayOfWeek(weekNumber, dayNumber, classStyle = 'table-info') {
-    if (dayNumber === 0)
+    if (!dayNumber || dayNumber === 0)
         return;
     document.querySelectorAll('table:nth-child(' + weekNumber * 2 + ') td:nth-child(' + (dayNumber + 1) + ')')
         .forEach((e) => e.setAttribute('class', classStyle));
@@ -19,6 +19,9 @@ function getWeekNumber(d) {
 }
 
 function selectPair(weekNumber, dayNumber, pairNumber, classStyle = 'table-warning') {
+    if (!weekNumber)
+        return;
+
     if (dayNumber === 0) {
         pairNumber = 1;
         dayNumber = 1;
@@ -31,7 +34,8 @@ function selectPair(weekNumber, dayNumber, pairNumber, classStyle = 'table-warni
         //node can be null in case if getNumbersOfPair return size + 1 value
         if (node && node.innerText) {
             node.setAttribute('class', classStyle);
-            break;
+            node.scrollIntoView({block: "center", behavior: "smooth"});
+            return;
         }
         pairNumber++;
         if (pairNumber > 5) {
@@ -55,14 +59,23 @@ function getNumberOfPair(date) {
     return endOfPair.length + 1;
 }
 
-(function refresh() {
-    let date = new Date();
-    let weekNumber = getWeekNumber(date) % 2 + 1
-    selectDayOfWeek(weekNumber, date.getDay());
-    selectPair(weekNumber, date.getDay(), getNumberOfPair(date));
+(function refresh(previousNumberOfPair, previousWeekNumber, previousDay) {
+    const date = new Date();
+    const weekNumber = (getWeekNumber(date) + 1) % 2 + 1;
+    const day = date.getDay();
+    const numberOfPair = getNumberOfPair(date);
+
+    if (previousWeekNumber !== weekNumber || previousDay !== day) {
+        selectDayOfWeek(previousWeekNumber, previousDay, '');
+        selectDayOfWeek(weekNumber, day);
+    }
+
+    if (numberOfPair !== previousNumberOfPair || previousWeekNumber !== weekNumber || previousDay !== day) {
+        selectPair(previousNumberOfPair, previousDay, previousNumberOfPair, '');
+        selectPair(weekNumber, day, numberOfPair);
+    }
+
     setTimeout(() => {
-        selectDayOfWeek(weekNumber, date.getDay(), '');
-        selectPair(weekNumber, date.getDay(), getNumberOfPair(date), '');
-        refresh();
+        refresh(numberOfPair, weekNumber, day);
     }, 1_000 * 10)
 })();
