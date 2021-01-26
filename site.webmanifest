@@ -8,5 +8,6 @@
   }],
   "start_url": "/",
   "background_color": "#fafafa",
-  "theme_color": "#fafafa"
+  "theme_color": "#fafafa",
+  "display": "standalone",
 }
