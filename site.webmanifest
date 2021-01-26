@@ -11,4 +11,5 @@
   "background_color": "#fafafa",
   "theme_color": "#fafafa",
   "display": "standalone",
+  "prefer_related_applications": true
 }
