@@ -1,16 +1,12 @@
 import React from 'react';
 import './App.css';
-import data from './data.json';
-import MyTable from './Table';
+import TimeTable from './TimeTable/TimeTable';
 
 function App() {
   return (
     <div>
       <h1 className="text-center">Розклад занять</h1>
-      <h2 className="text-center">Перший тиждень</h2>
-      <MyTable data={data[0]} />
-      <h2 className="text-center">Другий тиждень</h2>
-      <MyTable data={data[1]} />
+      <TimeTable />
     </div>
   );
 }
