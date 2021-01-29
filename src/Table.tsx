@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { Table as Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 // import './Table.css';
 
 interface IProps {
