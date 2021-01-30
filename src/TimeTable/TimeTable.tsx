@@ -8,8 +8,6 @@ const TimeTable: FunctionComponent = () => {
   const dayNumber = ((date.getDay() + 6) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6;
   const pair = selectPair(weekNumber, dayNumber, getNumberOfPair(date), data);
 
-  console.log(pair);
-
   return (
     <div>
       <h2 className="text-center">Перший тиждень</h2>
