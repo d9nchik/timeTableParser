@@ -49,7 +49,7 @@ const MyTable: FunctionComponent<IProps> = ({
                 }
                 key={String(data) + index}
               >
-                {String(data)}
+                {data.join(' ')}
               </td>
             ))}
           </tr>

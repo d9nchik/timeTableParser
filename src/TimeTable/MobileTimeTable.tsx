@@ -28,8 +28,8 @@ const MobileTable: FunctionComponent<IProps> = ({
   const modifiedBody = body.map(day =>
     day
       .map((info, infoIndex) => ({
-        info: String(info),
-        headInfo: String(head[infoIndex]),
+        info: info.join(' '),
+        headInfo: head[infoIndex].join(' '),
         infoIndex,
       }))
       .filter(({ info }) => info.length)
