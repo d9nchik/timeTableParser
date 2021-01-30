@@ -1,12 +1,34 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
+import { setInterval } from 'timers';
 import data from '../data.json';
 import AdaptiveTimeTable from './AdaptiveTable';
 
 const TimeTable: FunctionComponent = () => {
   const date = new Date();
-  const weekNumber = ((getWeekNumber(date) + 1) % 2) as 0 | 1;
-  const dayNumber = ((date.getDay() + 6) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  const pair = selectPair(weekNumber, dayNumber, getNumberOfPair(date), data);
+  const [weekNumber, setWeekNumber] = useState(
+    ((getWeekNumber(date) + 1) % 2) as 0 | 1
+  );
+  const [dayNumber, setDayNumber] = useState(
+    ((date.getDay() + 6) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6
+  );
+  const [pair, setPair] = useState(
+    selectPair(weekNumber, dayNumber, getNumberOfPair(date), data)
+  );
+
+  useEffect(() => {
+    const interval = setInterval(update, 10_000);
+
+    function update() {
+      const date = new Date();
+      setWeekNumber(((getWeekNumber(date) + 1) % 2) as 0 | 1);
+      setDayNumber(((date.getDay() + 6) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6);
+      setPair(selectPair(weekNumber, dayNumber, getNumberOfPair(date), data));
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   return (
     <div>
