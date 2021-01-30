@@ -33,7 +33,7 @@ const MobileTable: FunctionComponent<IProps> = ({
       {modifiedBody.map((day, dayIndex) => {
         const [head, ...body] = day;
         return (
-          <Table striped bordered hover>
+          <Table key={dayIndex} striped bordered hover>
             <thead className="thead-dark">
               <tr>
                 <th>{head.headInfo}</th>
@@ -42,9 +42,21 @@ const MobileTable: FunctionComponent<IProps> = ({
             </thead>
             <tbody>
               {body.map(({ info, headInfo, infoIndex }) => (
-                <tr>
+                <tr key={info + headInfo}>
                   <td>{headInfo}</td>
-                  <td>{info}</td>
+                  <td
+                    className={
+                      pairWeekNumber === weekNumber &&
+                      dayIndex === pairActiveDay &&
+                      pairActiveNumber + 1 === infoIndex
+                        ? 'table-warning'
+                        : dayIndex === activeDay && activeWeek === weekNumber
+                        ? 'table-info'
+                        : ''
+                    }
+                  >
+                    {info}
+                  </td>
                 </tr>
               ))}
             </tbody>
