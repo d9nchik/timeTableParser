@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 import { Table } from 'react-bootstrap';
 
@@ -17,6 +17,12 @@ const MobileTable: FunctionComponent<IProps> = ({
   weekNumber,
   activeWeek,
 }) => {
+  useEffect(() => {
+    document
+      .getElementsByClassName('table-warning')[0]
+      .scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [pairWeekNumber, pairActiveDay, pairActiveNumber]);
+
   data = transponeData(data);
   const [head, ...body] = data;
   const modifiedBody = body.map(day =>

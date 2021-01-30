@@ -17,7 +17,7 @@ const AdaptiveTable: FunctionComponent<IProps> = ({
   activeWeek,
   weekNumber,
 }) => {
-  const [isDesktop, setDesktop] = useState(true);
+  const [isDesktop, setDesktop] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
     window.addEventListener('resize', updateOnResize);

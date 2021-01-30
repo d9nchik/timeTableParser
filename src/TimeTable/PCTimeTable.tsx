@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 import { Table } from 'react-bootstrap';
 
@@ -17,6 +17,12 @@ const MyTable: FunctionComponent<IProps> = ({
   weekNumber,
   activeWeek,
 }) => {
+  useEffect(() => {
+    document
+      .getElementsByClassName('table-warning')[0]
+      .scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [pairWeekNumber, pairActiveDay, pairActiveNumber]);
+
   const [head, ...body] = data;
   return (
     <Table striped bordered hover>
