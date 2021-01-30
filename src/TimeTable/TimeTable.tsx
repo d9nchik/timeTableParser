@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import data from '../data.json';
 import PCTimeTable from './PCTimeTable';
+import MobileTimeTable from './MobileTimeTable';
 
 const TimeTable: FunctionComponent = () => {
   const date = new Date();
@@ -12,7 +13,7 @@ const TimeTable: FunctionComponent = () => {
     <div>
       <h2 className="text-center">Перший тиждень</h2>
 
-      <PCTimeTable
+      <MobileTimeTable
         data={data[0]}
         activeDay={dayNumber}
         activePair={pair}
@@ -21,7 +22,7 @@ const TimeTable: FunctionComponent = () => {
       />
       <h2 className="text-center">Другий тиждень</h2>
 
-      <PCTimeTable
+      <MobileTimeTable
         data={data[1]}
         activeDay={dayNumber}
         activePair={pair}
