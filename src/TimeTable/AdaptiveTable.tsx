@@ -5,7 +5,9 @@ import MobileTimeTable from './MobileTimeTable';
 interface IProps {
   data: string[][][];
   activeDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  activePair: [0 | 1, number, number];
+  pairWeekNumber: 0 | 1;
+  pairActiveDay: number;
+  pairActiveNumber: number;
   activeWeek: number;
   weekNumber: 0 | 1;
 }
@@ -13,7 +15,9 @@ interface IProps {
 const AdaptiveTable: FunctionComponent<IProps> = ({
   data,
   activeDay,
-  activePair,
+  pairWeekNumber,
+  pairActiveDay,
+  pairActiveNumber,
   activeWeek,
   weekNumber,
 }) => {
@@ -35,7 +39,9 @@ const AdaptiveTable: FunctionComponent<IProps> = ({
         <PCTimeTable
           data={data}
           activeDay={activeDay}
-          activePair={activePair}
+          pairWeekNumber={pairWeekNumber}
+          pairActiveDay={pairActiveDay}
+          pairActiveNumber={pairActiveNumber}
           activeWeek={activeWeek}
           weekNumber={weekNumber}
         />
@@ -43,7 +49,9 @@ const AdaptiveTable: FunctionComponent<IProps> = ({
         <MobileTimeTable
           data={data}
           activeDay={activeDay}
-          activePair={activePair}
+          pairWeekNumber={pairWeekNumber}
+          pairActiveDay={pairActiveDay}
+          pairActiveNumber={pairActiveNumber}
           activeWeek={activeWeek}
           weekNumber={weekNumber}
         />

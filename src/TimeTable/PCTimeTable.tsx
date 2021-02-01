@@ -5,7 +5,9 @@ import { Table } from 'react-bootstrap';
 interface IProps {
   data: string[][][];
   activeDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  activePair: [0 | 1, number, number];
+  pairWeekNumber: 0 | 1;
+  pairActiveDay: number;
+  pairActiveNumber: number;
   activeWeek: number;
   weekNumber: 0 | 1;
 }
@@ -13,7 +15,9 @@ interface IProps {
 const MyTable: FunctionComponent<IProps> = ({
   data,
   activeDay,
-  activePair: [pairWeekNumber, pairActiveDay, pairActiveNumber],
+  pairWeekNumber,
+  pairActiveDay,
+  pairActiveNumber,
   weekNumber,
   activeWeek,
 }) => {

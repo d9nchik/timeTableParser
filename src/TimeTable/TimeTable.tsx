@@ -11,9 +11,10 @@ const TimeTable: FunctionComponent = () => {
   const [dayNumber, setDayNumber] = useState(
     ((date.getDay() + 6) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6
   );
-  const [pair, setPair] = useState(
-    selectPair(weekNumber, dayNumber, getNumberOfPair(date), data)
-  );
+  const pair = selectPair(weekNumber, dayNumber, getNumberOfPair(date), data);
+  const [pairWeekNumber, setPairActiveWeekNumber] = useState(pair[0]);
+  const [pairActiveDay, setPairActiveDay] = useState(pair[1]);
+  const [pairActiveNumber, setPairActiveNumber] = useState(pair[2]);
 
   useEffect(() => {
     const interval = setInterval(update, 10_000);
@@ -22,7 +23,15 @@ const TimeTable: FunctionComponent = () => {
       const date = new Date();
       setWeekNumber(((getWeekNumber(date) + 1) % 2) as 0 | 1);
       setDayNumber(((date.getDay() + 6) % 7) as 0 | 1 | 2 | 3 | 4 | 5 | 6);
-      setPair(selectPair(weekNumber, dayNumber, getNumberOfPair(date), data));
+      const [pairWeekNumber, pairActiveDay, pairActiveNumber] = selectPair(
+        weekNumber,
+        dayNumber,
+        getNumberOfPair(date),
+        data
+      );
+      setPairActiveWeekNumber(pairWeekNumber);
+      setPairActiveDay(pairActiveDay);
+      setPairActiveNumber(pairActiveNumber);
     }
 
     return () => {
@@ -37,18 +46,22 @@ const TimeTable: FunctionComponent = () => {
       <AdaptiveTimeTable
         data={data[0]}
         activeDay={dayNumber}
-        activePair={pair}
         activeWeek={weekNumber}
         weekNumber={0}
+        pairActiveDay={pairActiveDay}
+        pairActiveNumber={pairActiveNumber}
+        pairWeekNumber={pairWeekNumber}
       />
       <h2 className="text-center">Другий тиждень</h2>
 
       <AdaptiveTimeTable
         data={data[1]}
         activeDay={dayNumber}
-        activePair={pair}
         activeWeek={weekNumber}
         weekNumber={1}
+        pairActiveDay={pairActiveDay}
+        pairActiveNumber={pairActiveNumber}
+        pairWeekNumber={pairWeekNumber}
       />
     </div>
   );
